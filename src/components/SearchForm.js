@@ -1,15 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { MovieCard } from "./MovieCard";
 import { fetchData } from "./utilities/axiosHelpers";
+import { randomCharGenerator } from "./utilities/randomGenerator";
 
 export const SearchForm = ({ addMovieToList }) => {
   const [form, setForm] = useState("");
   const [movie, setMovie] = useState({});
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const char = randomCharGenerator();
+    console.log(char);
+
+    const initialFetch = async () => {
+      const resp = await fetchData(char);
+      setMovie(resp.data);
+    };
+    initialFetch();
+  }, []);
 
   // get the form data while typing -- control input field
   const handleOnChange = (e) => {
@@ -50,6 +62,10 @@ export const SearchForm = ({ addMovieToList }) => {
     setForm("");
   };
 
+  const handleOnClear = () => {
+    setMovie({});
+  };
+
   // display movie data in our UI
   return (
     <Form onSubmit={handleOnSubmit} className="py-3">
@@ -68,7 +84,13 @@ export const SearchForm = ({ addMovieToList }) => {
         </Col>
       </Row>
       <Row className="py-3 justify-content-center">
-        {movie.imdbID && <MovieCard movie={movie} func={handleOnAddToList} />}
+        {movie.imdbID && (
+          <MovieCard
+            movie={movie}
+            func={handleOnAddToList}
+            handleOnClear={handleOnClear}
+          />
+        )}
         {error && <Alert variant="danger">{error}</Alert>}
       </Row>
     </Form>

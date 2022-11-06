@@ -1,9 +1,9 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 
-export const MovieCard = ({ movie = {}, func }) => {
+export const MovieCard = ({ movie = {}, func, showDelete, handleOnClear }) => {
   // console.log(movie);
-  const { Poster, Title, Year, imdbRating, Plot } = movie;
+  const { Poster, Title, Year, imdbRating, Plot, imdbID } = movie;
   return (
     <Card
       style={{
@@ -31,15 +31,27 @@ export const MovieCard = ({ movie = {}, func }) => {
             <span className=" fw-bold">Movie Plot:</span> {Plot}
           </div>
         </Card.Text>
-        <div className="d-flex justify-content-between">
-          <Button variant="primary">Watch it.</Button>
-          <Button onClick={() => func("happy")} variant="success">
-            Happy
-          </Button>
-          <Button onClick={() => func("lazy")} variant="warning">
-            Lazy
-          </Button>
-        </div>
+        {showDelete ? (
+          <div>
+            <Button variant="danger" onClick={() => func(imdbID)}>
+              Delete
+            </Button>
+          </div>
+        ) : (
+          <div className="d-flex justify-content-between">
+            <Button variant="primary">Watch it.</Button>
+            <Button onClick={() => func("happy")} variant="success">
+              Happy
+            </Button>
+            <Button onClick={handleOnClear} variant="warning">
+              <i class="fa-regular fa-circle-xmark"></i>
+            </Button>
+
+            <Button onClick={() => func("lazy")} variant="warning">
+              Lazy
+            </Button>
+          </div>
+        )}
       </Card.Body>
     </Card>
   );

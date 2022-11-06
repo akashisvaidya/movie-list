@@ -1,12 +1,33 @@
 import React from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 
-export const BtnGroup = () => {
+export const BtnGroup = ({ handleOnFilter }) => {
   return (
     <ButtonGroup aria-label="Basic example">
-      <Button variant="primary">All</Button>
-      <Button variant="success">Happy</Button>
-      <Button variant="info">Lazy</Button>
+      <Button
+        onClick={() => {
+          handleOnFilter("all");
+        }}
+        variant="primary"
+      >
+        All
+      </Button>
+      <Button
+        onClick={() => {
+          handleOnFilter("happy");
+        }}
+        variant="success"
+      >
+        Happy
+      </Button>
+      <Button
+        onClick={() => {
+          handleOnFilter("lazy");
+        }}
+        variant="info"
+      >
+        Lazy
+      </Button>
     </ButtonGroup>
   );
 };
